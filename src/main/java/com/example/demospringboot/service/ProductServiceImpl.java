@@ -32,10 +32,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductEntity> getProductListById(long id) {
-        List<ProductEntity> result = new ArrayList<ProductEntity>();
-        result = this.productRepository.findProductEntityById(id);
-        return result;
+    public ProductEntity getProductListById(long id) {
+        ProductEntity result = new ProductEntity();
+        result = this.productRepository.findFirstById(id);
+        if (result != null){
+            return result;
+        }
+        else {
+            throw new RuntimeException("ไม่พบข้อมูล");
+        }
     }
 
     @Override
@@ -45,7 +50,9 @@ public class ProductServiceImpl implements ProductService {
         if (!result.isEmpty()){
             return result;
         }
-        return result;
+        else {
+            throw new RuntimeException("ไม่พบข้อมูล");
+        }
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.example.demospringboot.entity.ProductEntity;
 import com.example.demospringboot.model.common.ErrorResponse;
 import com.example.demospringboot.model.common.SuccessResponse;
 import com.example.demospringboot.model.common.SuccessResponseWithArray;
+import com.example.demospringboot.model.common.SuccessResponseWithObject;
 import com.example.demospringboot.model.product.RequestCreateProduct;
 import com.example.demospringboot.model.product.RequestUpdateProduct;
 import com.example.demospringboot.service.ProductService;
@@ -35,16 +36,20 @@ public class CustomerController {
     }
 
     @GetMapping("/product-list/{id}")
-    public SuccessResponseWithArray getProductListById(@PathVariable long id) {
-        List<ProductEntity> productList = new ArrayList<>();
-        productList = this.productService.getProductListById(id);
-        return new SuccessResponseWithArray("200", "Success", (ArrayList) productList) ;    }
+    public SuccessResponseWithObject getProductListById(@PathVariable long id) {
+        ProductEntity product = new ProductEntity();
+        product = this.productService.getProductListById(id);
+        return new SuccessResponseWithObject("200", "Success", product) ;    }
 
     @GetMapping("/product")
     public SuccessResponseWithArray getProductListByName(@RequestParam(defaultValue = "") String name){
-        List<ProductEntity> productList = new ArrayList<>();
-        productList = this.productService.getProductListByName(name);
-        return new SuccessResponseWithArray("200", "Success", (ArrayList) productList);
+        try {
+            List<ProductEntity> productList = new ArrayList<>();
+            productList = this.productService.getProductListByName(name);
+            return new SuccessResponseWithArray("200", "Success", (ArrayList) productList);
+        } catch (Exception e){
+            throw  new ErrorResponse(1000, e.getMessage());
+        }
     }
 
     @PostMapping("/product")
@@ -54,7 +59,7 @@ public class CustomerController {
             return new SuccessResponse("0000", "Success");
         }
         catch (Error error){
-            throw new ErrorResponse(error.getMessage(), 1000, "Error");
+            throw new ErrorResponse(1000, "Error");
         }
 
     }
@@ -66,7 +71,7 @@ public class CustomerController {
             return  new SuccessResponse("0000", "Success");
         }
         catch (Exception e) {
-            throw new ErrorResponse(e.getMessage(), 1000, "Error");
+            throw new ErrorResponse(1000, "Error");
         }
     }
 }

@@ -8,8 +8,7 @@ public class ErrorResponse extends RuntimeException {
         super();
     }
 
-    public ErrorResponse(String message, int statusCode, String statusMessage) {
-        super(message);
+    public ErrorResponse(int statusCode, String statusMessage) {
         this.statusCode = statusCode;
         this.statusMessage = statusMessage;
     }

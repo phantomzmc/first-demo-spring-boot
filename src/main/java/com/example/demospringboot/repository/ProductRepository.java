@@ -18,6 +18,8 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
 
     List<ProductEntity> findByNameContainingIgnoreCase(String name);
 
+    ProductEntity findFirstById(long id);
+
     @Modifying(clearAutomatically = true)
     @Query(value = "update ProductEntity p set p.name = :name, p.price = :price, p.type = :type where p.id = :id")
     void updateProductById(
