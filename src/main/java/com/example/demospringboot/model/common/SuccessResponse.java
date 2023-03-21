@@ -1,18 +1,14 @@
 package com.example.demospringboot.model.common;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
-public class ResponseData {
-
+public class SuccessResponse {
     private String statusCode;
     private String statusMessage;
-    private ArrayList result;
 
-    public ResponseData(String statusCode, String statusMessage, ArrayList result) {
+    public SuccessResponse(String statusCode, String statusMessage) {
         this.statusCode = statusCode;
         this.statusMessage = statusMessage;
-        this.result = result;
     }
 
     public String getStatusCode() {
@@ -31,11 +27,4 @@ public class ResponseData {
         this.statusMessage = statusMessage;
     }
 
-    public ArrayList getResult() {
-        return result;
-    }
-
-    public void setResult(ArrayList result) {
-        this.result = result;
-    }
 }
