@@ -1,6 +1,9 @@
 package com.example.demospringboot.model.common;
 
-public class ErrorResponse extends RuntimeException {
+import lombok.Data;
+
+@Data
+public class ErrorResponse {
     private int statusCode;
     private String statusMessage;
 

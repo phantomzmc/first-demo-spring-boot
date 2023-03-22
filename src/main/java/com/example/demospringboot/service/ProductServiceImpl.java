@@ -4,10 +4,13 @@ import com.example.demospringboot.entity.ProductEntity;
 import com.example.demospringboot.model.product.RequestCreateProduct;
 import com.example.demospringboot.model.product.RequestUpdateProduct;
 import com.example.demospringboot.repository.ProductRepository;
+import com.example.demospringboot.util.exception.BaseException;
+import com.example.demospringboot.util.exception.UserException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,26 +35,26 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductEntity getProductListById(long id) {
+    public ProductEntity getProductListById(long id) throws UserException {
         ProductEntity result = new ProductEntity();
         result = this.productRepository.findFirstById(id);
         if (result != null){
             return result;
         }
         else {
-            throw new RuntimeException("ไม่พบข้อมูล");
+            throw UserException.dataNotFound();
         }
     }
 
     @Override
-    public List<ProductEntity> getProductListByName(String name) {
+    public List<ProductEntity> getProductListByName(String name) throws UserException {
         List<ProductEntity> result = new ArrayList<ProductEntity>();
         result = this.productRepository.findByNameContainingIgnoreCase(name);
         if (!result.isEmpty()){
             return result;
         }
         else {
-            throw new RuntimeException("ไม่พบข้อมูล");
+            throw UserException.dataNotFound();
         }
     }
 
