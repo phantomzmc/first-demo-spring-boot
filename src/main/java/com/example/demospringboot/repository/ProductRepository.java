@@ -13,8 +13,9 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
 
     List<ProductEntity> findProductEntityById(long id);
-    @Query(value = "select p from ProductEntity p where p.name like %:name%")
     List<ProductEntity> findProductEntityByName(String name);
+    @Query(value = "select p from ProductEntity p where p.name like %:name%")
+    List<ProductEntity> findProductEntityLikeByName(String name);
 
     List<ProductEntity> findByNameContainingIgnoreCase(String name);
 

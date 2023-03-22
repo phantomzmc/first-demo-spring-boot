@@ -4,19 +4,20 @@ import com.example.demospringboot.entity.ProductEntity;
 import com.example.demospringboot.model.product.RequestCreateProduct;
 import com.example.demospringboot.model.product.RequestUpdateProduct;
 import com.example.demospringboot.repository.ProductRepository;
-import com.example.demospringboot.util.exception.BaseException;
 import com.example.demospringboot.util.exception.UserException;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ProductServiceImpl implements ProductService {
 
+    Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
     @Autowired
     private ProductRepository productRepository;
 
@@ -24,6 +25,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public void createProduct(RequestCreateProduct createProduct) {
         ProductEntity entity = new ProductEntity(createProduct.getName(), createProduct.getType(), createProduct.getPrice());
+        logger.debug(entity.toString());
         this.productRepository.save(entity);
     }
 
@@ -39,6 +41,7 @@ public class ProductServiceImpl implements ProductService {
         ProductEntity result = new ProductEntity();
         result = this.productRepository.findFirstById(id);
         if (result != null){
+            logger.info(result.toString());
             return result;
         }
         else {
@@ -50,6 +53,7 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductEntity> getProductListByName(String name) throws UserException {
         List<ProductEntity> result = new ArrayList<ProductEntity>();
         result = this.productRepository.findByNameContainingIgnoreCase(name);
+        logger.debug(result.toString());
         if (!result.isEmpty()){
             return result;
         }

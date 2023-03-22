@@ -47,4 +47,14 @@ public class RequestUpdateProduct {
     public void setPrice(long price) {
         this.price = price;
     }
+
+    @Override
+    public String toString() {
+        return "RequestUpdateProduct{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", price=" + price +
+                '}';
+    }
 }

@@ -38,4 +38,13 @@ public class RequestCreateProduct {
     public void setPrice(long price) {
         this.price = price;
     }
+
+    @Override
+    public String toString() {
+        return "RequestCreateProduct{" +
+                "name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", price=" + price +
+                '}';
+    }
 }
