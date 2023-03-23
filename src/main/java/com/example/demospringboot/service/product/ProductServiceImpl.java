@@ -1,4 +1,4 @@
-package com.example.demospringboot.service;
+package com.example.demospringboot.service.product;
 
 import com.example.demospringboot.entity.ProductEntity;
 import com.example.demospringboot.model.product.RequestCreateProduct;

@@ -1,13 +1,18 @@
 package com.example.demospringboot.controller;
 
+import com.example.demospringboot.entity.CustomerEntity;
 import com.example.demospringboot.entity.ProductEntity;
 import com.example.demospringboot.model.common.SuccessResponse;
 import com.example.demospringboot.model.common.SuccessResponseWithArray;
 import com.example.demospringboot.model.common.SuccessResponseWithObject;
+import com.example.demospringboot.model.customer.RequestCreateCustomer;
+import com.example.demospringboot.model.customer.RequestUpdateCustomer;
 import com.example.demospringboot.model.product.RequestCreateProduct;
 import com.example.demospringboot.model.product.RequestUpdateProduct;
-import com.example.demospringboot.service.ProductService;
+import com.example.demospringboot.service.customer.CustomerService;
+import com.example.demospringboot.service.product.ProductService;
 import com.example.demospringboot.util.exception.BaseException;
+import com.example.demospringboot.util.exception.UserException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -22,9 +27,11 @@ public class CustomerController {
 
     Logger logger = LoggerFactory.getLogger(CustomerController.class);
     private final ProductService productService;
+    private final CustomerService customerService;
 
-    public CustomerController(ProductService productService) {
+    public CustomerController(ProductService productService, CustomerService customerService) {
         this.productService = productService;
+        this.customerService = customerService;
     }
 
     @GetMapping("/help-check")
@@ -68,5 +75,32 @@ public class CustomerController {
         logger.info(requestUpdateProduct.toString());
         this.productService.updateProduct(requestUpdateProduct);
         return ResponseEntity.ok(new SuccessResponse("0000", "Success"));
+    }
+
+    @GetMapping("/customers")
+    public ResponseEntity<SuccessResponseWithObject> getCustomerById(@RequestParam(defaultValue = "0") long id) throws UserException {
+        CustomerEntity customer = new CustomerEntity();
+        customer = this.customerService.getCustomerById(id);
+        return ResponseEntity.ok(new SuccessResponseWithObject("200", "Success", customer));
+    }
+
+    @PostMapping("/customers")
+    public ResponseEntity<SuccessResponse> createCustomer(@RequestBody RequestCreateCustomer requestCreateCustomer) throws UserException {
+        logger.info(requestCreateCustomer.toString());
+        this.customerService.createCustomer(requestCreateCustomer);
+        return ResponseEntity.ok(new SuccessResponse("200", "Success"));
+    }
+    @PutMapping("/customers")
+    public ResponseEntity<SuccessResponse> updateCustomerById(@RequestBody RequestUpdateCustomer requestUpdateCustomer) throws UserException {
+        logger.info(requestUpdateCustomer.toString());
+        this.customerService.updateCustomerById(requestUpdateCustomer);
+        return ResponseEntity.ok(new SuccessResponse("200", "Success"));
+    }
+
+    @PutMapping("/customers-id")
+    public  ResponseEntity<SuccessResponse> updateCustomerStatusById(@RequestBody RequestUpdateCustomer requestUpdateCustomer) throws UserException {
+        logger.info(requestUpdateCustomer.toString());
+        this.customerService.updateCustomerStatusById(requestUpdateCustomer);
+        return ResponseEntity.ok(new SuccessResponse("200", "Success"));
     }
 }
