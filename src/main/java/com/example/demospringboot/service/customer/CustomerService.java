@@ -9,10 +9,10 @@ import java.util.List;
 
 public interface CustomerService {
 
-    List<CustomerEntity> getCustomerByTel(String tel);
-    List<CustomerEntity> getCustomerByName(String name);
+    List<CustomerEntity> getCustomerByTel(String tel) throws UserException;
+    List<CustomerEntity> getCustomerByName(String name) throws UserException;
     CustomerEntity getCustomerById(long id) throws UserException;
-    List<CustomerEntity> getCustomerByEmail(String email);
+    List<CustomerEntity> getCustomerByEmail(String email) throws UserException;
     void createCustomer(RequestCreateCustomer requestCreateCustomer) throws UserException;
     void updateCustomerById(RequestUpdateCustomer requestUpdateCustomer) throws UserException;
     void updateCustomerStatusById(RequestUpdateCustomer requestUpdateCustomer) throws UserException;
