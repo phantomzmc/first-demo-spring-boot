@@ -16,6 +16,7 @@ public interface CustomerRepository extends JpaRepository<CustomerEntity, Long> 
     List<CustomerEntity> findCustomerEntityByFirstName(String firstName);
     List<CustomerEntity> findCustomerEntityByTel(String tel);
     List<CustomerEntity> findCustomerEntityById(long id);
+    List<CustomerEntity> findCustomerEntityByIdAndStatusId(long id, int statusId);
 
     @Modifying(clearAutomatically = true)
     @Query(value = "update CustomerEntity c set c.firstName = :firstName, c.lastName = :lastName, c.email = :email, c.tel = :tel where c.id = :id and c.statusId = 1")

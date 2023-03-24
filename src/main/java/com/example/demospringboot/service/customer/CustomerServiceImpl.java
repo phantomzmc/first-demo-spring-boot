@@ -40,9 +40,14 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerEntity getCustomerById(long id) throws UserException {
+//        List<CustomerEntity> entity = this.customerRepository.findCustomerEntityByIdAndStatusId(id, 1);
         List<CustomerEntity> entity = this.customerRepository.findCustomerEntityById(id);
         if (entity.stream().findFirst().isPresent()) {
-            return entity.get(0);
+            if (entity.get(0).getStatusId() == 0){
+                throw UserException.dataNotFound();
+            } else {
+                return entity.get(0);
+            }
         } else {
             throw UserException.dataNotFound();
         }
@@ -72,13 +77,7 @@ public class CustomerServiceImpl implements CustomerService {
         if (!customerEntityList.isEmpty()) {
             CustomerEntity customerEntity = this.modelMapper.map(requestUpdateCustomer, CustomerEntity.class);
             this.logger.info(customerEntity.toString());
-            try {
-                this.customerRepository.updateCustomerById(
-                        requestUpdateCustomer.getId(), requestUpdateCustomer.getFirstName(), requestUpdateCustomer.getLastName(), requestUpdateCustomer.getEmail(), requestUpdateCustomer.getTel()
-                );
-            } catch (Exception e) {
-                throw UserException.updateUserNotFound();
-            }
+            this.updateCustomer(customerEntity);
         } else {
             throw UserException.dataNotFound();
         }
@@ -92,14 +91,31 @@ public class CustomerServiceImpl implements CustomerService {
             CustomerEntity customerEntity = customerEntityList.get(0);
             customerEntity.setStatusId(requestUpdateCustomer.getStatusId());
             logger.info(customerEntity.toString());
-            try {
-                this.customerRepository.updateCustomerStatusIdById(customerEntity.getStatusId(), customerEntity.getId());
-            } catch (Exception e) {
-                throw UserException.updateUserNotFound();
-            }
+            this.updateStatusCustomer(customerEntity);
         } else {
             throw UserException.dataNotFound();
         }
 
+    }
+
+    private void updateCustomer(CustomerEntity customerEntity) throws UserException {
+        try {
+            this.customerRepository.updateCustomerById(
+                    customerEntity.getId(),
+                    customerEntity.getFirstName(),
+                    customerEntity.getLastName(),
+                    customerEntity.getEmail(),
+                    customerEntity.getTel()
+            );
+        } catch (Exception e) {
+            throw UserException.updateUserNotFound();
+        }
+    }
+    private void updateStatusCustomer(CustomerEntity customerEntity) throws UserException {
+        try {
+            this.customerRepository.updateCustomerStatusIdById(customerEntity.getStatusId(), customerEntity.getId());
+        } catch (Exception e) {
+            throw UserException.updateUserNotFound();
+        }
     }
 }
